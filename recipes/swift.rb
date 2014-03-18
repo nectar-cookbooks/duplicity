@@ -32,14 +32,6 @@ duplicity_dir = node[:duplicity][:configs]
 include_recipe "duplicity::common"
 include_recipe "setup::openstack-clients"
 
-template "#{duplicity_dir}/config.sh" do
-  source "swift-config.sh.erb"
-  variables ({ :os_container => os_container,
-               :full_backups_to_keep => node[:duplicity][:full_backups_to_keep],
-               :duplicity_dir => duplicity_dir
-             })
-  mode "0644"
-end
 
 os_container = node[:duplicity][:swift][:container] ||
   node[:setup][:openstack_container]
@@ -52,6 +44,15 @@ os_tenant_name = node[:duplicity][:swift][:os_tenant_name] ||
 os_auth_url = node[:duplicity][:swift][:os_auth_url] ||
   node[:setup][:openstack_auth_url]
  
+template "#{duplicity_dir}/config.sh" do
+  source "swift-config.sh.erb"
+  variables ({ :os_container => os_container,
+               :full_backups_to_keep => node[:duplicity][:full_backups_to_keep],
+               :duplicity_dir => duplicity_dir
+             })
+  mode "0644"
+end
+
 template "#{duplicity_dir}/keys.sh" do
   source "swift-keys.sh.erb"
   variables ({ :passphrase => node[:duplicity][:passphrase],
