@@ -28,12 +28,9 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 duplicity_dir = "/etc/duplicity"
-duplicity_user = "backup"
 
 package "python" do
   end
 
 package "duplicity" do
   end
-
-
