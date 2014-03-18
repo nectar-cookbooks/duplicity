@@ -42,7 +42,7 @@ end
 
 template "#{duplicity_dir}/run_duplicity.sh" do
   mode 0755
-  owner root
+  owner 'root'
   source 'run_duplicity.sh.erb'
 end
 
