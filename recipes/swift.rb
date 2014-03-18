@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: duplicity
-# Recipe:: common
+# Recipe:: swift
 #
 # Copyright (c) 2014, The University of Queensland
 # All rights reserved.
@@ -29,13 +29,36 @@
 
 duplicity_dir = node[:duplicity][:configs]
 
-directory duplicity_dir do
-  owner "root"
-  mode 0700
+include_recipe "duplicity::common"
+include_recipe "setup::openstack-clients"
+
+template "#{duplicity_dir}/config.sh" do
+  source "swift-config.sh.erb"
+  variables ({ :os_container => os_container,
+               :full_backups_to_keep => node[:duplicity][:full_backups_to_keep],
+               :duplicity_dir => duplicity_dir
+             })
+  mode "0644"
 end
 
-package "python" do
-  end
-
-package "duplicity" do
-  end
+os_container = node[:duplicity][:swift][:container] ||
+  node[:setup][:openstack_container]
+os_username = node[:duplicity][:swift][:os_username] ||
+  node[:setup][:openstack_username]
+os_password = node[:duplicity][:swift][:os_password] ||
+  node[:setup][:openstack_password]
+os_tenant_name = node[:duplicity][:swift][:os_tenant_name] ||
+  node[:setup][:openstack_tenant_name]
+os_auth_url = node[:duplicity][:swift][:os_auth_url] ||
+  node[:setup][:openstack_auth_url]
+ 
+template "#{duplicity_dir}/keys.sh" do
+  source "swift-keys.sh.erb"
+  variables ({ :passphrase => node[:duplicity][:passphrase],
+               :os_username => os_username,
+               :os_password => os_password,
+               :os_tenant_name => os_tenant_name,
+               :os_auth_url => os_auth_url
+             })
+  mode "0600"
+end

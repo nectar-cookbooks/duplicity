@@ -9,4 +9,4 @@ REPOSITORY_URL="s3+http://$S3_BUCKET"
  
 FULL_BACKUPS_TO_KEEP="<%= @full_backups_to_keep %>"
  
-. /etc/duplicity/keys.sh
+. <%= @duplicity_dir %>/keys.sh
