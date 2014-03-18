@@ -1,3 +1,5 @@
+default[:duplicity][:configs] = '/etc/duplicity'
+
 default[:duplicity][:cloudfiles][:bucket] = "backup_#{node[:fqdn]}"
 default[:duplicity][:s3][:bucket] = "backup_#{node[:fqdn]}"
  
