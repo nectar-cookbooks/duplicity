@@ -44,5 +44,8 @@ template "#{duplicity_dir}/run_duplicity.sh" do
   mode 0755
   owner 'root'
   source 'run_duplicity.sh.erb'
+  variables ({:full_backups_to_keep => node[:duplicity][:full_backups_to_keep],
+               :duplicity_dir => duplicity_dir
+             })
 end
 
