@@ -18,17 +18,20 @@
 #
 # Modified by Stephen Crawley for the nectar-cookbooks "duplicity" cookbook.
 
+duplicity_dir = node[:duplicity][:configs]
+
 include_recipe "duplicity::common"
 package "python-boto" # for S3
  
-template "/etc/duplicity/config.sh" do
+template "#{duplicity_dir}/config.sh" do
   source "s3-config.sh.erb"
   variables :bucket => node[:duplicity][:s3][:bucket],
-    :full_backups_to_keep => node[:duplicity][:full_backups_to_keep]
+    :full_backups_to_keep => node[:duplicity][:full_backups_to_keep],
+    :duplicity_dir => duplicity_dir
   mode "0644"
 end
  
-template "/etc/duplicity/keys.sh" do
+template "#{duplicity_dir}/keys.sh" do
   source "s3-keys.sh.erb"
   variables :passphrase => node[:duplicity][:passphrase],
     :aws_access_key_id => node[:duplicity][:s3][:aws_access_key_id],
