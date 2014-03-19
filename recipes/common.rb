@@ -41,6 +41,7 @@ if platform?('ubuntu') and node['platform_version'].to_f < 14.04 then
   apt_repository "duplicity-team-ppa" do
     uri 'http://ppa.launchpad.net/duplicity-team/ppa/ubuntu/'
     distribution 'saucy'
+    components ['main']
   end
 end
 
