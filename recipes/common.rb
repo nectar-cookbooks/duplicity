@@ -37,7 +37,14 @@ end
 package "python" do
 end
 
-package "duplicity" do
+if platform?('ubuntu') and node['platform_version'].to_f < 14.04 then
+  apt_repository "duplicity-team-ppa" do
+    uri 'http://ppa.launchpad.net/duplicity-team/ppa/ubuntu/'
+    distribution 'saucy'
+  end
+end
+
+package "duplicity >= 0.6.22" do
 end
 
 template "#{duplicity_dir}/run_duplicity.sh" do
