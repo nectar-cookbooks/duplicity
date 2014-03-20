@@ -43,6 +43,8 @@ os_tenant_name = node[:duplicity][:swift][:os_tenant_name] ||
   node[:setup][:openstack_tenant_name]
 os_auth_url = node[:duplicity][:swift][:os_auth_url] ||
   node[:setup][:openstack_auth_url]
+os_auth_version = node[:duplicity][:swift][:os_auth_version] ||
+  node[:setup][:openstack_auth_version]
  
 template "#{duplicity_dir}/config.sh" do
   source "swift-config.sh.erb"
@@ -59,7 +61,8 @@ template "#{duplicity_dir}/keys.sh" do
                :os_username => os_username,
                :os_password => os_password,
                :os_tenant_name => os_tenant_name,
-               :os_auth_url => os_auth_url
+               :os_auth_url => os_auth_url,
+               :os_auth_version => os_auth_version
              })
   mode "0600"
 end
