@@ -46,6 +46,8 @@ if platform?('ubuntu') and node['platform_version'].to_f < 14.04 then
     components ['main']
   end
   force_version = true
+  # This is the version supplied by the PPA ....
+  version = '0.6.23'
 end
 
 if platform_family?('redhat', 'fedora') then
@@ -53,7 +55,7 @@ if platform_family?('redhat', 'fedora') then
   end
 elsif force_version then
   package "duplicity" do
-    version min_version
+    version version
   end
 else
   package "duplicity" do
