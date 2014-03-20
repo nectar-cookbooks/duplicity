@@ -37,15 +37,27 @@ end
 package "python" do
 end
 
+min_version = '0.6.22'
+force_version = false
 if platform?('ubuntu') and node['platform_version'].to_f < 14.04 then
   apt_repository "duplicity-team-ppa" do
     uri 'http://ppa.launchpad.net/duplicity-team/ppa/ubuntu/'
     distribution 'saucy'
     components ['main']
   end
+  force_version = true
 end
 
-package "duplicity >= 0.6.22" do
+if platform_family?('redhat', 'fedora') then
+  package "duplicity >= #{min_version}" do
+  end
+elsif force_version then
+  package "duplicity" do
+    version min_version
+  end
+else
+  package "duplicity" do
+  end
 end
 
 template "#{duplicity_dir}/run_duplicity.sh" do
